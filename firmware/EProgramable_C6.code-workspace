@@ -17,6 +17,12 @@
         },
         {
             "path": "./projects/x_template"
+        },
+        {
+            "path": "projects/Proyecto1_ejercicio2"
+        },
+        {
+            "path": "projects/Proyecto1_ejercicio3"
         }
     ],
     "settings": {
