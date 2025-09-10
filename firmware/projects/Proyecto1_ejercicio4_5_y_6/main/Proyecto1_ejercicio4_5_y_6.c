@@ -2,22 +2,29 @@
  *
  * @section genDesc General Description
  *
- * This section describes how the program works.
- *
- * <a href="https://drive.google.com/...">Operation Example</a>
+ * Este ejercicio permite mostrar numeros en un display utilizando pines GPIO.
+ * Convierte un número en sus dígitos individuales y los grafica en el display,
+ * activando y desactivando los pines correspondientes.
+ * 
  *
  * @section hardConn Hardware Connection
  *
  * |    Peripheral  |   ESP32   	|
  * |:--------------:|:--------------|
- * | 	PIN_X	 	| 	GPIO_X		|
- *
+ * | 	Dígito 1	| 	GPIO_20	    |
+ * | 	Dígito 2	| 	GPIO_21	    |
+ * | 	Dígito 3	| 	GPIO_22	    |
+ * | 	Dígito 4	| 	GPIO_23	    |
+ * | 	Select 1	| 	GPIO_19	    |
+ * | 	Select 2	| 	GPIO_18	    |
+ * | 	Select 3	| 	GPIO_9	    |
  *
  * @section changelog Changelog
  *
  * |   Date	    | Description                                    |
  * |:----------:|:-----------------------------------------------|
  * | 03/09/2025 | Document creation		                         |
+ * | 10/09/2025 | Se agrega documentación		                 |
  *
  * @author Barrionuevo Zoe (zoe.nicole.barrionuevo@gmail.com)
  *
@@ -39,6 +46,13 @@ typedef struct
 	io_t dir;			/*!< GPIO direction '0' IN;  '1' OUT*/
 } gpioConf_t;
 /*==================[internal functions declaration]=========================*/
+/**
+ * @brief Convierte un número decimal en un arreglo de dígitos BCD.
+ *
+ * @param data Número a convertir.
+ * @param digits Cantidad de dígitos a extraer.
+ * @param bcd_number Arreglo donde se guardan los dígitos BCD.
+ */
 void  convertToBcdArray (uint32_t data, uint8_t digits, uint8_t * bcd_number)
 {
 	for ( int i = digits - 1; i >= 0; i-- )
@@ -50,7 +64,17 @@ void  convertToBcdArray (uint32_t data, uint8_t digits, uint8_t * bcd_number)
 
 }
 
-void setGPIO (uint8_t numero, gpioConf_t *GPIOdigitos)
+/**
+ * @brief Recibe un dígito BCD y un vector de estructuras gpioConf_t para mostrarlo en los pines GPIO.
+ *
+ * Enciende o apaga los pines de salida según el valor del dígito BCD recibido.
+ *
+ * @param digitoBCD Dígito en formato BCD a mostrar.
+ * @param GPIOdigitos Vector de estructuras gpioConf_t que representa los pines GPIO.
+ *
+ * Requiere incluir el archivo de cabecera gpio_mcu.h
+ */
+void setGPIO (uint8_t digitoBCD, gpioConf_t *GPIOdigitos)
 {
 	for (int i = 0; i<4; i++)
 	{
@@ -65,6 +89,17 @@ void setGPIO (uint8_t numero, gpioConf_t *GPIOdigitos)
 	}
 }
 
+/**
+ * @brief Grafica un número en un display multiplexado usando GPIO.
+ *
+ * Convierte el número en dígitos individuales y los muestra en el display,
+ * activando y desactivando los pines correspondientes.
+ *
+ * @param dato Número a graficar.
+ * @param cant_digitos_salida Cantidad de dígitos a mostrar.
+ * @param GPIOdigitos Arreglo de pines para los bits de cada dígito.
+ * @param GPIOmapa Arreglo de pines para seleccionar cada dígito del display.
+ */
 void graficarNumero(uint32_t dato, uint8_t cant_digitos_salida, gpioConf_t *GPIOdigitos, gpioConf_t *GPIOmapa)
 {
 	uint8_t digitosSeparados[3];
