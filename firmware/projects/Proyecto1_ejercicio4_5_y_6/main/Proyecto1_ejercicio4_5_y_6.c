@@ -65,16 +65,14 @@ void  convertToBcdArray (uint32_t data, uint8_t digits, uint8_t * bcd_number)
 }
 
 /**
- * @brief Recibe un dígito BCD y un vector de estructuras gpioConf_t para mostrarlo en los pines GPIO.
+ * @brief La funcion cambia el estado de cada GPIO a 0 o a 1, segun el
+ * estado del bit correspondiente en el BCD ingresado.
+ * 
  *
- * Enciende o apaga los pines de salida según el valor del dígito BCD recibido.
- *
- * @param digitoBCD Dígito en formato BCD a mostrar.
- * @param GPIOdigitos Vector de estructuras gpioConf_t que representa los pines GPIO.
- *
- * Requiere incluir el archivo de cabecera gpio_mcu.h
+ * @param numero Valor a mostrar en binario.
+ * @param GPIOdigitos Arreglo de configuración de pines GPIO.
  */
-void setGPIO (uint8_t digitoBCD, gpioConf_t *GPIOdigitos)
+void setGPIO (uint8_t numero, gpioConf_t *GPIOdigitos)
 {
 	for (int i = 0; i<4; i++)
 	{
